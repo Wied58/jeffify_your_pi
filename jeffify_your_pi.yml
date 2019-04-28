@@ -1,0 +1,53 @@
+--- 
+- 
+  hosts: jeff_pis
+  become: true
+  become_method: sudo
+  become_user: root
+  tasks:
+
+    - name: Install Git 
+      apt:
+        name: git
+        state: present
+
+    - name: Install Samba
+      apt:
+        name: samba
+        state: present
+
+    - name: Update smb.conf
+      blockinfile:
+        dest: "/etc/samba/smb.conf"
+        content: 
+         /[pi/]
+         path = /home/pi
+         only guest = no
+         browsable = yes
+         writeable = yes
+         create mask = 0777
+         directory mask = 0777
+         public = yes
+
+    - name: Install pip 2 
+      apt:
+         name: python-pip
+         state: present
+
+    - name: Install pip 3
+      apt: 
+         name: python3-pip
+         state: present
+
+    - name: Install Pillow and pyserial with pip
+      pip:
+        name:
+          Pillow
+          pyserial
+
+    - name: Update .bashrc
+      blockinfile: 
+        dest: "/home/pi/.bashrc"
+        block: |
+          unalias ls
+          set -o vi
