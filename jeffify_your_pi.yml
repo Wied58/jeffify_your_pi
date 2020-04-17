@@ -19,8 +19,8 @@
     - name: Update smb.conf
       blockinfile:
         dest: "/etc/samba/smb.conf"
-        content: 
-         /[pi/]
+        block: |
+         [pi]
          path = /home/pi
          only guest = no
          browsable = yes
@@ -42,8 +42,9 @@
     - name: Install Pillow and pyserial with pip
       pip:
         name:
-          Pillow
+          #Pillow
           pyserial
+      executable: pip3
 
     - name: Update .bashrc
       blockinfile: 
