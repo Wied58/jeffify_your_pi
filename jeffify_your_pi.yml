@@ -44,7 +44,7 @@
         name:
           #Pillow
           pyserial
-      executable: pip3
+        executable: pip3
 
     - name: Update .bashrc
       blockinfile: 
