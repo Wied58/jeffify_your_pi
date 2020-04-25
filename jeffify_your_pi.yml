@@ -6,10 +6,10 @@
   become_user: root
   tasks:
 
-    - name: Install Git 
-      apt:
-        name: git
-        state: present
+#    - name: Install Git 
+#      apt:
+#        name: git
+#        state: present
 
     - name: Install Samba
       apt:
@@ -29,10 +29,10 @@
          directory mask = 0777
          public = yes
 
-    - name: Install pip 2 
-      apt:
-         name: python-pip
-         state: present
+#    - name: Install pip 2 
+#      apt:
+#         name: python-pip
+#         state: present
 
     - name: Install pip 3
       apt: 
