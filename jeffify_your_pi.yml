@@ -1,6 +1,7 @@
 --- 
 - 
-  hosts: jeff_pis
+#  hosts: jeff_pis
+  hosts: all
   become: true
   become_method: sudo
   become_user: root
