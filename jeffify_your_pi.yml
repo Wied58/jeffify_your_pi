@@ -29,6 +29,13 @@
          directory mask = 0777
          public = yes
 
+    - name: Set GPU Memory
+      lineinfile:
+        path: /boot/congig.txt
+        regexp: '^gpu_mem='
+        line: 'gpu_mem=256'
+
+
 #    - name: Install pip 2 
 #      apt:
 #         name: python-pip
@@ -39,10 +46,9 @@
          name: python3-pip
          state: present
 
-    - name: Install Pillow and pyserial with pip
+    - name: Install pyserial with pip
       pip:
         name:
-          #Pillow
           pyserial
         executable: pip3
 
@@ -52,3 +58,4 @@
         block: |
           unalias ls
           set -o vi
+
