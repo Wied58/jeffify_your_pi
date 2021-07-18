@@ -32,7 +32,7 @@
 
     - name: Set GPU Memory
       lineinfile:
-        path: /boot/congig.txt
+        path: /boot/config.txt
         regexp: '^gpu_mem='
         line: 'gpu_mem=256'
 
