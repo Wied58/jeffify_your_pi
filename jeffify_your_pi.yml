@@ -57,6 +57,6 @@
       blockinfile: 
         dest: "/home/pi/.bashrc"
         block: |
-          unalias ls
           set -o vi
-
+          unalias ls 2>/dev/null
+          iexport EDITOR=vi
