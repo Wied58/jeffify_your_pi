@@ -37,21 +37,16 @@
         line: 'gpu_mem=256'
 
 
-#    - name: Install pip 2 
-#      apt:
-#         name: python-pip
-#         state: present
-
     - name: Install pip 3
       apt: 
          name: python3-pip
          state: present
 
-    - name: Install pyserial with pip
-      pip:
-        name:
-          pyserial
-        executable: pip3
+#    - name: Install pyserial with pip
+#      pip:
+#        name:
+#          pyserial
+#        executable: pip3
 
     - name: Update .bashrc
       blockinfile: 
