@@ -58,6 +58,7 @@
 
     - name: Update .bashrc
       ansible.builtin.blockinfile:
+        msg: "The value of ansible_user_dir is: {{ ansible_user_dir}}"
         path: "{{ ansible_user_dir }}/.bashrc"
         block: |
           set -o vi
