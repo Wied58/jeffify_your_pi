@@ -57,6 +57,7 @@
 #          iexport EDITOR=vi
 
     - name: Output custom message with variable
+      become: false 
       ansible.builtin.debug:
         #msg: "The value of the ansible_user_dir is: {{ ansible_user_dir }}"
         msg: "The value of the ansible_user_dir is: {{ ansible_env.HOME }}"
