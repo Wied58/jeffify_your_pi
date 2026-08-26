@@ -56,9 +56,12 @@
 #          unalias ls 2>/dev/null
 #          iexport EDITOR=vi
 
+    - name: Output custom message with variable
+      ansible.builtin.debug:
+        msg: "The value of the variable is: {{ my_variable }}"
+
     - name: Update .bashrc
       ansible.builtin.blockinfile:
-        msg: "The value of ansible_user_dir is: {{ ansible_user_dir}}"
         path: "{{ ansible_user_dir }}/.bashrc"
         block: |
           set -o vi
