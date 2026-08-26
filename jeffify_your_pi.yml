@@ -7,6 +7,16 @@
   become_user: root
   tasks:
 
+
+    - name: Get the original (pre-escalation) user's home dir
+      ansible.builtin.command: echo $HOME
+      register: original_home
+      become: false
+      changed_when: false
+    
+    - debug:
+        msg: "Original home is {{ original_home.stdout }}"
+
 #    - name: Install Git 
 #      apt:
 #        name: git
