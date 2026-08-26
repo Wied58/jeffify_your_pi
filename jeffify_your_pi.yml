@@ -58,7 +58,8 @@
 
     - name: Output custom message with variable
       ansible.builtin.debug:
-        msg: "The value of the ansible_user_dir is: {{ ansible_user_dir }}"
+        #msg: "The value of the ansible_user_dir is: {{ ansible_user_dir }}"
+        msg: "The value of the ansible_user_dir is: {{ lookup('env', 'HOME') }}"
 
     - name: Update .bashrc
       ansible.builtin.blockinfile:
