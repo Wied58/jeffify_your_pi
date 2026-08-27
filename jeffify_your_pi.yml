@@ -83,21 +83,21 @@
 
 
 
-     - name: Get the original (pre-escalation) user's home dir
-       ansible.builtin.command: echo $HOME
-       register: original_home
-       become: false
-       changed_when: false
-     
-     - name: Update .bashrc
-       ansible.builtin.blockinfile:
-         path: "{{ original_home.stdout }}/.bashrc"
-         block: |
-           set -o vi
-           unalias ls 2>/dev/null
-           export EDITOR=vi
-         marker: "# {mark} ANSIBLE MANAGED BLOCK - Jeffify"
-         owner: "{{ ansible_user }}"
-         group: "{{ ansible_user }}"
+    - name: Get the original (pre-escalation) user's home dir
+      ansible.builtin.command: echo $HOME
+      register: original_home
+      become: false
+      changed_when: false
+    
+    - name: Update .bashrc
+      ansible.builtin.blockinfile:
+        path: "{{ original_home.stdout }}/.bashrc"
+        block: |
+          set -o vi
+          unalias ls 2>/dev/null
+          export EDITOR=vi
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - Jeffify"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
 
 
