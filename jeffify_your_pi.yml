@@ -1,103 +1,59 @@
---- 
-- 
-#  hosts: jeff_pis
+---
+- name: Jeffify your Pi
   hosts: all
   become: true
   become_method: sudo
   become_user: root
+
   tasks:
 
-
-    - name: Get the original (pre-escalation) user's home dir
-      ansible.builtin.command: echo $HOME
-      register: original_home
-      become: false
-      changed_when: false
-    
-    - debug:
-        msg: "Original home is {{ original_home.stdout }}"
-
-#    - name: Install Git 
-#      apt:
-#        name: git
-#        state: present
-
     - name: Install Samba
-      apt:
+      ansible.builtin.apt:
         name: samba
         state: present
+        update_cache: true
 
     - name: Update smb.conf
-      blockinfile:
-        dest: "/etc/samba/smb.conf"
+      ansible.builtin.blockinfile:
+        path: /etc/samba/smb.conf
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - Jeffify Samba"
         block: |
-         [pi]
-         path = /home/pi
-         only guest = no
-         browsable = yes
-         writeable = yes
-         create mask = 0777
-         directory mask = 0777
-         public = yes
+          [pi]
+          path = /home/{{ ansible_user }}
+          only guest = no
+          browsable = yes
+          writeable = yes
+          create mask = 0777
+          directory mask = 0777
+          public = yes
+      notify: Restart Samba
 
-    - name: Set GPU Memory
-      lineinfile:
+    - name: Set GPU memory
+      ansible.builtin.lineinfile:
         path: /boot/config.txt
         regexp: '^gpu_mem='
         line: 'gpu_mem=256'
 
+    - name: Install pip3
+      ansible.builtin.apt:
+        name: python3-pip
+        state: present
 
-    - name: Install pip 3
-      apt: 
-         name: python3-pip
-         state: present
-
-#    - name: Install pyserial with pip
-#      pip:
-#        name:
-#          pyserial
-#        executable: pip3
-
-#    - name: Update .bashrc
-#      blockinfile: 
-#        dest: "/home/pi/.bashrc"
-#        block: |
-#          set -o vi
-#          unalias ls 2>/dev/null
-#          iexport EDITOR=vi
-
-#    - name: Output custom message with variable
-#      become: false 
-#      ansible.builtin.debug:
-#        #msg: "The value of the ansible_user_dir is: {{ ansible_user_dir }}"
-#        msg: "The value of the ansible_user_dir is: {{ ansible_env.HOME }}"
-#
-#    - name: Update .bashrc
-#      ansible.builtin.blockinfile:
-#        path: "{{ original_home.stdout }}/.bashrc"
-#        block: |
-#          set -o vi
-#          unalias ls 2>/dev/null
-#          export EDITOR=vi
-#        marker: "# {mark} ANSIBLE MANAGED BLOCK - Jeffify"
-
-
-
-    - name: Get the original (pre-escalation) user's home dir
-      ansible.builtin.command: echo $HOME
-      register: original_home
-      become: false
-      changed_when: false
-    
-    - name: Update .bashrc
+    - name: Update .bashrc for connecting user
       ansible.builtin.blockinfile:
-        path: "{{ original_home.stdout }}/.bashrc"
+        path: "~{{ ansible_user }}/.bashrc"
+        marker: "# {mark} ANSIBLE MANAGED BLOCK - Jeffify"
         block: |
           set -o vi
           unalias ls 2>/dev/null
           export EDITOR=vi
-        marker: "# {mark} ANSIBLE MANAGED BLOCK - Jeffify"
         owner: "{{ ansible_user }}"
         group: "{{ ansible_user }}"
 
+  handlers:
+
+    - name: Restart Samba
+      ansible.builtin.service:
+        name: smbd
+        state: restarted
 
