@@ -74,7 +74,7 @@
 
     - name: Update .bashrc
       ansible.builtin.blockinfile:
-        path: "{{ ansible_user_dir }}/.bashrc"
+        path: "{{ original_home.stdout }}/.bashrc"
         block: |
           set -o vi
           unalias ls 2>/dev/null
